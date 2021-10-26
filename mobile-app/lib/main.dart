@@ -170,23 +170,25 @@ class _UploadPageState extends State<UploadPage> {
                 ),
               ),
                */
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () => _uploadFile(),
-                  child: Container(
-                    height: 55,
-                    width: 196,
-                    decoration: BoxDecoration(
-                      color: Colors.tealAccent[700],
-                      borderRadius: BorderRadius.circular(5),
+              _imagePath == null
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () => _uploadFile(),
+                        child: Container(
+                          height: 55,
+                          width: 196,
+                          decoration: BoxDecoration(
+                            color: Colors.tealAccent[700],
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Center(
+                            child: Text('Upload'),
+                          ),
+                        ),
+                      ),
                     ),
-                    child: Center(
-                      child: Text('Upload'),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
