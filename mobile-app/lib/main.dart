@@ -1,8 +1,10 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:io' as Io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 void main(List<String> args) {
   runApp(MaterialApp(
@@ -42,6 +44,29 @@ class _UploadPageState extends State<UploadPage> {
     _imagePath == null;
   }
 
+  void _uploadFile() async {
+    // TODO: add exception check
+    final List<int> imageAsBytes =
+        Io.File(_imagePath!.path.toString()).readAsBytesSync();
+
+    String base64Image = base64Encode(imageAsBytes);
+
+    String fileName = _imagePath!.path.split('/').last;
+
+    await http
+        .post(Uri.parse('http://10.0.2.2:3000/upload'),
+            headers: {"Content-Type": "application/json"},
+            body: json.encode(<String, String>{
+              "image": base64Image,
+              "name": fileName,
+            }))
+        .then((res) {
+      print(res.body);
+    }).catchError((err) {
+      print(err);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,7 +97,7 @@ class _UploadPageState extends State<UploadPage> {
                           ),
                         )
                       : Image.file(
-                          File(_imagePath!.path),
+                          Io.File(_imagePath!.path),
                         ),
                 ),
               ),
@@ -148,7 +173,7 @@ class _UploadPageState extends State<UploadPage> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () => _uploadFile(),
                   child: Container(
                     height: 55,
                     width: 196,
