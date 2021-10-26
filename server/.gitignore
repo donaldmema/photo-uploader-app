@@ -1,2 +1,4 @@
 node_modules
-downloaded_images
+downloaded_images/**.jpg
+downloaded_images/**.png
+downloaded_images/**.gif
